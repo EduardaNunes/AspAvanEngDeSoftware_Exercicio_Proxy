@@ -1,0 +1,33 @@
+package org.example.proxy;
+
+import java.util.List;
+
+public class LivroProxy implements ILivro {
+
+    private Livro livro;
+
+    private Integer codigo;
+
+    public LivroProxy(Integer codigo) {
+        this.codigo = codigo;
+    }
+
+    @Override
+    public List<String> obterDadosLivro() {
+        if (this.livro == null) {
+            this.livro = new Livro(this.codigo);
+        }
+        return this.livro.obterDadosLivro();
+    }
+
+    @Override
+    public String abrirLivro(Usuario usuario) {
+        if (!usuario.isAssinante()) {
+            throw new IllegalArgumentException("Usuário não autorizado");
+        }
+        if (this.livro == null) {
+            this.livro = new Livro(this.codigo);
+        }
+        return this.livro.abrirLivro(usuario);
+    }
+}
